@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login to SatBot</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif; /* Use the same font as the chat page */
+            background-color: #edf0f5; /* Use the same background color as the chat page */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 300px;
+            /* Use the same box-shadow and border-radius as the chat message bubbles */
+        }
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 24px;
+            color: #333;
+            /* If you have specific styles for headings on the chat page, apply them here */
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            /* Match the input styling with the chat input if it's different */
+        }
+        .login-button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #65757d; /* Blue */
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+
+.login-button:hover {
+    background-color: #0069d9; /* Darker blue */
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Login to SatBot</h2>
+        <form action="{% url 'chat:login' %}" method="post">
+            {% csrf_token %}
+            <!-- Display any errors from login attempt -->
+            {% if error %}
+            <div style="color: red; margin-bottom: 10px;">{{ error }}</div>
+            {% endif %}
+            <input type="text" name="username" placeholder="Enter Username" required>
+            <input type="password" name="password" placeholder="Enter Password" required>
+            <button type="submit" class="login-button">Login</button>
+        </form>
+        <!-- Link to the signup page -->
+        <div style="text-align: center; margin-top: 20px;">
+            Don't have an account? <a href="{% url 'chat:signup' %}">Sign up</a>
+        </div>
+    </div>
+
+</body>
+</html>

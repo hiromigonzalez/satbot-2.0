@@ -1,0 +1,494 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-bg-color: rgba(198, 198, 198, 0.258);
+            --chat-bg-color: #e8e8ec; /* Set your desired chat background color here */
+            --sidebar-icon-color: #000;
+            --sidebar-icon-hover-color: #555;
+            --chat-text-color: #000;
+            --bubble-user-bg-color: #fff;
+            --bubble-bot-bg-color: #fff;
+            --bubble-text-color: #333;
+            --input-bg-color: #f9f9f9;
+            --input-border-color: #f4f4f4;
+            --button-bg-color: #000;
+            --button-text-color: #fff;
+            --button-hover-color: #000;
+        }
+
+        
+    textarea#userInput {
+        width: 100%;
+        min-height: 50px; /* Adjust to your preference */
+        padding: 10px;
+        box-sizing: border-box; /* Padding included in width */
+        resize: none; /* Disallow manual resizing */
+        border: none;
+        outline: none;
+        background-color: var(--input-bg-color);
+        color: var(--chat-text-color);
+        font-family: 'Roboto', sans-serif; /* Choose the font that you prefer */
+        overflow-y: auto; /* Allows scrolling if content exceeds the height */
+    }
+
+
+        .dark-mode {
+            --sidebar-icon-color: #fff;
+            --chat-bg-color: #000;
+            --button-bg-color: #000; /* Black background for buttons in dark mode */
+            --chat-text-color: #8f8888;
+            --bubble-user-bg-color: #333; /* Dark grey for message bubbles */
+            --bubble-bot-bg-color: #333; /* Dark grey for message bubbles */
+            --bubble-text-color: #fff; /* White text for message bubbles */
+            --input-text-color: #000; /* Black text inside the input bar */
+            --sidebar-bg-color: #333; /* Dark grey for the sidebar */
+            --button-text-color: #fff;
+            --button-hover-color: #474747;
+        }
+
+        .dark-mode #user-input-container {
+        background: #000; /* Black background for the input container in dark mode */
+    }
+            .sidebar-icon {
+            z-index: 1; /* Ensure it's above the main content but below floating elements */
+        }
+
+        
+
+        * This will ensure the send icon is black in dark mode */
+            .dark-mode #sendButton i {
+                color: #000; 
+            }
+
+            #chatbox, .message {
+            background-color: transparent; /* or var(--chat-bg-color) to match the container's color */
+        }
+
+            /* Set the input container background to black, but keep the input field white */
+            #user-input-container {
+                background: #000; /* Black background for the container in dark mode */
+            }
+
+            /* This ensures the background around bubbles and the input bar is black */
+            .dark-mode #chat-container {
+                background: #000; /* Black background for the chat container in dark mode */
+            }
+
+            /* This will keep the sidebar grey in dark mode */
+            .dark-mode #sidebar {
+                background-color: #333; /* Dark grey for the sidebar in dark mode */
+            }
+            .dark-mode-icon {
+            color: white; /* Set the icon color to white in dark mode */
+        }
+
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            background-color: var(--chat-bg-color);
+            color: var(--chat-text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #sidebar {
+            width: 60px;
+            background-color: var(--sidebar-bg-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+        }
+
+        .sidebar-icon {
+            width: 40px;
+            height: 40px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .sidebar-icon i {
+            color: var(--sidebar-icon-color);
+            font-size: 24px;
+            transition: color 0.3s;
+        }
+
+        .sidebar-icon:hover i {
+            color: var(--sidebar-icon-hover-color);
+        }
+
+        .chat-logo {
+        width: 60px; 
+        height: auto; 
+        
+        }
+
+        #chat-container {
+            box-shadow: 000;
+            border-radius: 8px;
+            overflow: hidden;
+            width: calc(100% - 60px);
+            background: var(--chat-bg-color);
+            margin-left: 60px;
+            padding-bottom: 60px;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--chat-bg-color);
+
+        }
+
+
+        #chatbox {
+            display: flex;
+            padding-bottom: 70px; /* Height of the input container plus some extra space */
+            flex-direction: column;
+            max-height: calc(100vh - 180px); /* Adjust based on the header and input container heights */
+            overflow-y: auto; /* Allow scrolling within the chatbox */
+            padding: 0px;
+            margin: 0;
+            width: 100%;
+            background-color: var(--chat-bg-color);
+
+    }
+
+
+    #user-input-container {
+    position: fixed;
+    bottom: 0;
+    left: 80px; /* Increase this if your sidebar width is more than 60px or if the icon needs more space */
+    right: 0;
+    width: auto;
+    padding: 10px 20px;
+    background-color: var(--chat-bg-color);
+    border-top: none;
+    z-index: 2;
+}
+
+
+
+        #userInput {
+            width: 100%;
+            height: 40px; /* Fixed height */
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid var(--input-border-color);
+            background-color: var(--input-bg-color); /* Use the variable for background color */
+            color: var(--input-text-color); /* Use the variable for text color */
+            resize: none; /* Disable resizing */
+            outline: none; /* Remove the default outline */
+        }
+
+
+#sendButton {
+    background-color: #f4f4f4; /* Transparent background for the send button */
+    color: #000; /* Black color for the send button icon */
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    border-radius: 50%; /* Circular shape */
+    padding: 8px;
+}
+
+#sendButton i {
+    font-size: 24px;
+}
+
+
+
+/* Continue with the rest of your styles... */
+
+
+/* Chat Bubble Styles */
+.message {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 10px; /* Space between messages */
+    padding: 10px 20px;
+    border-radius: 18px;
+    color: var(--bubble-text-color);
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+n-chat-icon i {
+            color: var(--sidebar-icon-color);
+        }
+    
+        .clean-chat-icon {
+    position: fixed;
+    bottom: 20px; /* Match this to the bottom of the input container */
+    left: 65px; /* Adjust this value so it's just to the left of the input container */
+    z-index: 3; /* Ensure it's above the input container */
+    background-color: #ffffff; /* Icon background */
+    color: #000; /* Icon color */
+    border: 1px solid var(--input-border-color);
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+
+* Message Content Inside Bubbles */
+.message-content {
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1); /* subtle shadow for depth */
+}
+
+
+.bot-message {
+    background-color: var(--bubble-bot-bg-color);
+    margin-left: 10px;
+    align-self: flex-start; /* Align bot messages to the left */
+}
+
+.bot-message .message-icon {
+}
+
+.user-message {
+    background-color: var(--bubble-user-bg-color);
+    margin-right: 10px;
+    align-self: flex-end; /* Align user messages to the right */
+}
+
+.user-message .message-icon {
+}
+
+/* User and Bot Icons */
+.message-icon {
+    width: 30px;  /* Desired width for the icons, ensuring it matches the container size */
+    height: 30px;  /* Desired height for the icons, ensuring it matches the container size */
+    border-radius: 60%;
+    overflow: hidden;  /* Ensures the image doesn't exceed the bounds of the container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
+.message-icon.initials {
+    background-color: rgb(116, 177, 226); 
+    color: white;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+
+
+.message-icon img {
+    width: 100%;  /* Ensures the image attempts to fill the width of the container */
+    height: 100%;  /* Ensures the image attempts to fill the height of the container */
+    object-fit: cover;  /* Ensures the image covers the available space without distorting */
+}
+
+.bot-message .message-icon {
+    margin-right: 5px;
+    order: -1; /* Moves icon to the left of the message */
+}
+
+.user-message .message-icon {
+    margin-left: 5px;
+    order: 1; /* Moves icon to the right of the message */
+}
+
+    .sender-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        margin: 0 10px; /* Adjust spacing around the icon as needed */
+    }
+
+    h2 {
+    text-align: center;
+    width: 100%;
+    margin: 0; /* Removes default margin */
+    padding: 20px 0 0 0; /* Adjust the padding to remove the space below the text */
+    box-sizing: border-box; /* Includes padding in width calculation */
+    
+}
+
+    </style>
+</head>
+<body class="light-mode">
+    <div id="sidebar">
+        <div class="sidebar-icon" onclick="redirectToHome()">
+            <img src="{% static 'icons/chatbot_logo.png' %}" alt="Chat Logo" class="chat-logo">
+        </div>
+        <div class="sidebar-icon" onclick="redirectToHome()">
+            <i class="fas fa-home"></i>
+        </div>
+        <div class="sidebar-icon" onclick="focusChatInput()">
+            <i class="fas fa-comments"></i>
+        </div>
+        <div class="sidebar-icon" onclick="toggleTheme()">
+            <i class="fas fa-moon" id="theme-icon"></i>
+        </div>
+    </div>
+    <div id="chat-container">
+        <h2>Hello {{ username }}, welcome to SatBot!</h2>
+        <div id="chatbox">
+            <!-- Chat messages will appear here -->
+        </div>
+    
+        <button id="clean-chat" onclick="cleanChat()" class="clean-chat-icon">
+            <i class="fas fa-brush"></i>
+        </button>
+        
+
+        
+        
+        <div id="user-input-container">
+            <textarea id="userInput" placeholder="Type a message..." onkeyup="handleEnterKey(event)"></textarea>
+            <button id="sendButton" onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+    
+
+</style>
+
+    <div id="additional-controls">
+        
+        
+    </div>
+    
+
+    <script>
+    
+    function adjustTextareaHeight(id) {
+    var textarea = document.getElementById(id);
+    textarea.style.height = 'auto'; // Reset the height to shrink or expand based on the content
+    textarea.style.height = textarea.scrollHeight + 'px'; // Set the height based on the scroll height of the textarea
+}
+
+    
+    function cleanChat() {
+        var chatbox = document.getElementById("chatbox");
+        chatbox.innerHTML = ''; // Clears the chat messages
+}
+
+    var staticUrl = "{% static 'icons/' %}";
+
+    var botIconUrl = "{% static 'icons/bot.png' %}";
+    var personIconUrl = "{% static 'icons/person.png' %}";
+    var userInitials = "{{ user_initials }}";
+
+    function sendMessage() {
+    var input = document.getElementById("userInput");
+    var message = input.value.trim();
+
+    if (message !== '') {
+        var chatbox = document.getElementById("chatbox");
+
+        // User Message
+        var userMessage = document.createElement("div");
+        userMessage.className = 'message user-message';
+        
+        // Determine content for the message icon (initials or person icon)
+        var messageIconContent = userInitials ? `<div class='message-icon initials'>${userInitials}</div>` : `<img src='${personIconUrl}' alt='User Icon' class='message-icon'>`;
+
+        userMessage.innerHTML = `<div class='message-content'>${message.replace(/\n/g, '<br>')}</div>${messageIconContent}`;
+        chatbox.appendChild(userMessage);
+
+        input.value = '';
+        input.style.height = '50px';
+
+        // Simulate a bot response
+        setTimeout(function() {
+            var botMessage = document.createElement("div");
+            botMessage.className = 'message bot-message';
+            botMessage.innerHTML = `<div class='message-icon'><img src='${botIconUrl}' alt='Bot Icon'></div><div class='message-content'>Welcome to Satbot 😃, your 24/7 CS guide for USD. How can I help?</div>`;
+            chatbox.appendChild(botMessage);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }, 500);
+    }
+}
+
+
+
+
+
+
+function handleEnterKey(event) {
+    if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault(); // Prevent default to stop from submitting
+        sendMessage();
+    } else {
+        // Allow for new lines with Shift + Enter
+        adjustTextareaHeight('userInput');
+    }
+}
+
+document.getElementById('userInput').addEventListener('input', function() {
+    adjustTextareaHeight('userInput');
+});
+
+
+
+        function scrollToBottom() {
+            var chatbox = document.getElementById("chatbox");
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        function cleanChat() {
+            var chatbox = document.getElementById("chatbox");
+            chatbox.innerHTML = ''; // Clear the chat
+        }
+
+        function toggleTheme() {
+        var body = document.body;
+        var themeIcon = document.getElementById("theme-icon");
+        var brushIcon = document.getElementById("brush-icon");
+
+        body.classList.toggle('dark-mode');
+
+        if(body.classList.contains('dark-mode')) {
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+            brushIcon.classList.add('dark-mode-icon'); // Add a class to change the icon color in dark mode
+        } else {
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+            brushIcon.classList.remove('dark-mode-icon'); // Remove the class to revert to the original color
+        }
+    }
+
+        function redirectToHome() {
+            window.location.href = '/chat/login/';
+        }
+
+        function focusChatInput() {
+            document.getElementById("userInput").focus();
+        }
+
+        window.onload = function() {
+            focusChatInput();
+        };
+    </script>
+</body>
+</html>
