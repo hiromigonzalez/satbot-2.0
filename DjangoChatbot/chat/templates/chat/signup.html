@@ -1,56 +1,225 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=5.0">
-    <title>Sign Up</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .form-container {
-            width: 1000px;
-            margin: 100px auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        input {
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button {
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            background-color: #5cb85c;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #4cae4c;
-        }
-    </style>
-</head>
-<body>
-    <div class="form-container">
-        <h2>Sign Up</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Sign up</button>
-        </form>
-    </div>
-</body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+   <body style="font-family: 'Roboto', sans-serif;
+      font-size: 14px;
+      background-color: #dbdbdb;">
+      <div class="form_wrapper">
+         <div class="form_container">
+            <div class="title_container" style="text-align: center;
+               padding-bottom: 15px;">
+               <h2>Sign Up</h2>
+            </div>
+            <div class="row clearfix" style='&amp;:after {
+               content: "";display:block;clear:both;visibility:hidden;height:0;margin:10px -15px;&gt;div {
+               padding:0 15px;box-sizing:border-box;'>
+               <div class>
+                  <form>
+                     <!-- First & Last Name -->
+                     <div class="row clearfix" style='&amp;:after {
+                        content: "";display:block;clear:both;visibility:hidden;height:0;margin:10px -15px;&gt;div {
+                        padding:0 15px;box-sizing:border-box;'>
+                        <div class="col_half">
+                           <div class="input_field" style="position: relative;
+                              margin-bottom: 20px;
+                              -webkit-animation: bounce 0.6s ease-out;
+                              animation: bounce 0.6s ease-out;
+                              &gt;span {
+                              position: absolute;
+                              left: 0;
+                              top: 0;
+                              color: #333;
+                              height: 100%;
+                              border-right: 1px solid #cccccc;
+                              text-align: center;
+                              width: 30px;
+                              &gt;i {
+                              padding-top: 10px;"> <span><i aria-hidden="true" class="fa fa-user"></i></span>
+                              <input type="text" name="name" placeholder="First Name">
+                           </div>
+                        </div>
+                        <div class="col_half">
+                           <div class="input_field" style="position: relative;
+                              margin-bottom: 20px;
+                              -webkit-animation: bounce 0.6s ease-out;
+                              animation: bounce 0.6s ease-out;
+                              &gt;span {
+                              position: absolute;
+                              left: 0;
+                              top: 0;
+                              color: #333;
+                              height: 100%;
+                              border-right: 1px solid #cccccc;
+                              text-align: center;
+                              width: 30px;
+                              &gt;i {
+                              padding-top: 10px;"> <span><i aria-hidden="true" class="fa fa-user"></i></span>
+                              <input type="text" name="name" placeholder="Last Name" required>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- USD Username -->
+                     <div class="input_field" style="position: relative;
+                        margin-bottom: 20px;
+                        -webkit-animation: bounce 0.6s ease-out;
+                        animation: bounce 0.6s ease-out;
+                        &gt;span {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        color: #333;
+                        height: 100%;
+                        border-right: 1px solid #cccccc;
+                        text-align: center;
+                        width: 30px;
+                        &gt;i {
+                        padding-top: 10px;"> <span><i aria-hidden="true" class="fa fa-user"></i></span>
+                        <input type="text" name="text" placeholder="USD Username" required>
+                     </div>
+                     <!-- USD Email -->
+                     <div class="input_field" style="position: relative;
+                        margin-bottom: 20px;
+                        -webkit-animation: bounce 0.6s ease-out;
+                        animation: bounce 0.6s ease-out;
+                        &gt;span {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        color: #333;
+                        height: 100%;
+                        border-right: 1px solid #cccccc;
+                        text-align: center;
+                        width: 30px;
+                        &gt;i {
+                        padding-top: 10px;"> <span><i aria-hidden="true" class="fa fa-envelope"></i></span>
+                        <input type="email" name="email" placeholder="USD E-mail" required>
+                     </div>
+                     <!-- Password -->
+                     <div class="input_field" style="position: relative;
+                        margin-bottom: 20px;
+                        -webkit-animation: bounce 0.6s ease-out;
+                        animation: bounce 0.6s ease-out;
+                        &gt;span {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        color: #333;
+                        height: 100%;
+                        border-right: 1px solid #cccccc;
+                        text-align: center;
+                        width: 30px;
+                        &gt;i {
+                        padding-top: 10px;"> <span><i aria-hidden="true" class="fa fa-lock"></i></span>
+                        <input type="password" name="password" placeholder="Password" required>
+                     </div>
+                     <!-- Confirm Password -->
+                     <div class="input_field" style="position: relative;
+                        margin-bottom: 20px;
+                        -webkit-animation: bounce 0.6s ease-out;
+                        animation: bounce 0.6s ease-out;
+                        &gt;span {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        color: #333;
+                        height: 100%;
+                        border-right: 1px solid #cccccc;
+                        text-align: center;
+                        width: 30px;
+                        &gt;i {
+                        padding-top: 10px;"> <span><i aria-hidden="true" class="fa fa-lock"></i></span>
+                        <input type="password" name="password" placeholder="Confirm Password" required>
+                     </div>
+                     <!-- Student or Professor -->
+                     <div class="input_field select_option" style="position: relative;
+                        margin-bottom: 20px;
+                        -webkit-animation: bounce 0.6s ease-out;
+                        animation: bounce 0.6s ease-out;
+                        &gt;span {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        color: #333;
+                        height: 100%;
+                        border-right: 1px solid #cccccc;
+                        text-align: center;
+                        width: 30px;
+                        &gt;i {
+                        padding-top: 10px;">
+                        <select style="&amp;:hover + .select_arrow, &amp;:focus + .select_arrow {
+                           border-top-color: $black;">
+                           <option>Select Role</option>
+                           <option>Student</option>
+                           <option>Professor</option>
+                        </select>
+                        <div class="select_arrow"></div>
+                     </div>
+                     <!-- Year -->
+                     <div class="input_field" style="position: relative;
+                        margin-bottom: 20px;
+                        -webkit-animation: bounce 0.6s ease-out;
+                        animation: bounce 0.6s ease-out;
+                        &gt;span {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        color: #333;
+                        height: 100%;
+                        border-right: 1px solid #cccccc;
+                        text-align: center;
+                        width: 30px;
+                        &gt;i {
+                        padding-top: 10px;"> <span><i aria-hidden="true" class="fa fa-pencil"></i></span>
+                        <input type="text" name="text" placeholder="Year" required>
+                     </div>
+                     <!-- Course -->
+                     <div class="input_field" style="position: relative;
+                        margin-bottom: 20px;
+                        -webkit-animation: bounce 0.6s ease-out;
+                        animation: bounce 0.6s ease-out;
+                        &gt;span {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        color: #333;
+                        height: 100%;
+                        border-right: 1px solid #cccccc;
+                        text-align: center;
+                        width: 30px;
+                        &gt;i {
+                        padding-top: 10px;"> <span><i aria-hidden="true" class="fa fa-pencil"></i></span>
+                        <input type="text" name="text" placeholder="Course" required>
+                     </div>
+                     <!-- Semester -->
+                     <div class="input_field select_option" style="position: relative;
+                        margin-bottom: 20px;
+                        -webkit-animation: bounce 0.6s ease-out;
+                        animation: bounce 0.6s ease-out;
+                        &gt;span {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        color: #333;
+                        height: 100%;
+                        border-right: 1px solid #cccccc;
+                        text-align: center;
+                        width: 30px;
+                        &gt;i {
+                        padding-top: 10px;">
+                        <select style="&amp;:hover + .select_arrow, &amp;:focus + .select_arrow {
+                           border-top-color: $black;">
+                           <option>Semester</option>
+                           <option>Fall</option>
+                           <option>Spring</option>
+                        </select>
+                        <div class="select_arrow"></div>
+                     </div>
+                     <!-- Register Button -->
+                     <input class="button" type="submit" value="Register">
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+      <p class="return">Return to <a href="%7B%%20url%20'chat:login'%20%%7D">Login Page</a></p>
+   </body>
 </html>
