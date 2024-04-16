@@ -403,7 +403,17 @@ n-chat-icon i {
     function sendMessage() {
     var input = document.getElementById("userInput");
     var message = input.value.trim();
-    var context = "In this course students will learn how beliefs and ideas - ways of talking or doing things with words - shape the way we view and value the natural world. Particular attention will be given to the relationship between religious/theological language and beliefs and environmental justice. After critically examining the concepts of “environment,” “justice,” and “faith,” we will analyze key contributions from major theorists to discussions of environmental justice and ecological crises. Throughout the course students will consider the following questions: What is the religious significance of nature, if any? How have religious attitudes evolved in response to the ecological crisis? What role should religion play in helping to solve the ecological crisis, if any? ow has the environmental justice movement helped to expand the political and moral meaning of stewardship, sustainability, and human-earth flourishing? How is theoretical reasoning about what is the case with regard to the environment connected to practical reasoning about what we ought to do? How might we be formed–what practices are necessary–to more clearly discern and communicate this connection? Students will learn how various writers and activists have understood the nature of our ecological crises, the conditions for its possibility, and the demands of environmental justice. Thinking along with these writers and activists, students will be tasked with cultivating particular imaginative and self-reflective resources and to draw on these resources as they develop their own responses the course's guiding questions."; // Define context
+    var context = `Course Description
+A continued exploration of computational problem solving, with a focus on using abstraction to manage program complexity. Students will learn to use both functional and data abstractions, analyze the time and space complexity of algorithms, and
+utilize functional, object-oriented, and event-driven paradigms within their programs. (3 hours lecture, 1.5 hours lab per week.)
+Course Learning Outcomes
+At the end of this course you should be able to do the following.
+1. Use abstraction to build programs to solve more complex problems (abstract data types, higher order functions, use of existing libraries)
+2. Design and implement computer programs that use object-oriented, functional, and event-driven paradigms.
+3. Evaluate tradeoffs between different algorithms for solving a problem (space and time tradeoffs, big O notation, searching and sorting algorithms as examples).
+4. Design and implement an abstract data type.
+5. Use modern tools for software development and maintenance (IDE, debugger, source code management).`;
+
 
     if (message !== '') {
         displayUserMessage(message);
