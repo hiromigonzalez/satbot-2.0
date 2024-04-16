@@ -403,33 +403,65 @@ n-chat-icon i {
     function sendMessage() {
     var input = document.getElementById("userInput");
     var message = input.value.trim();
+    var context = "In this course students will learn how beliefs and ideas - ways of talking or doing things with words - shape the way we view and value the natural world. Particular attention will be given to the relationship between religious/theological language and beliefs and environmental justice. After critically examining the concepts of “environment,” “justice,” and “faith,” we will analyze key contributions from major theorists to discussions of environmental justice and ecological crises. Throughout the course students will consider the following questions: What is the religious significance of nature, if any? How have religious attitudes evolved in response to the ecological crisis? What role should religion play in helping to solve the ecological crisis, if any? ow has the environmental justice movement helped to expand the political and moral meaning of stewardship, sustainability, and human-earth flourishing? How is theoretical reasoning about what is the case with regard to the environment connected to practical reasoning about what we ought to do? How might we be formed–what practices are necessary–to more clearly discern and communicate this connection? Students will learn how various writers and activists have understood the nature of our ecological crises, the conditions for its possibility, and the demands of environmental justice. Thinking along with these writers and activists, students will be tasked with cultivating particular imaginative and self-reflective resources and to draw on these resources as they develop their own responses the course's guiding questions."; // Define context
 
     if (message !== '') {
-        var chatbox = document.getElementById("chatbox");
+        displayUserMessage(message);
 
-        // User Message
-        var userMessage = document.createElement("div");
-        userMessage.className = 'message user-message';
-        
-        // Determine content for the message icon (initials or person icon)
-        var messageIconContent = userInitials ? `<div class='message-icon initials'>${userInitials}</div>` : `<img src='${personIconUrl}' alt='User Icon' class='message-icon'>`;
+        // Define the URL for the Hugging Face API call
+        const url = 'https://api-inference.huggingface.co/models/bert-large-uncased-whole-word-masking-finetuned-squad';
 
-        userMessage.innerHTML = `<div class='message-content'>${message.replace(/\n/g, '<br>')}</div>${messageIconContent}`;
-        chatbox.appendChild(userMessage);
-
-        input.value = '';
-        input.style.height = '50px';
-
-        // Simulate a bot response
-        setTimeout(function() {
-            var botMessage = document.createElement("div");
-            botMessage.className = 'message bot-message';
-            botMessage.innerHTML = `<div class='message-icon'><img src='${botIconUrl}' alt='Bot Icon'></div><div class='message-content'>Welcome to Satbot 😃, your 24/7 CS guide for USD. How can I help?</div>`;
-            chatbox.appendChild(botMessage);
-            chatbox.scrollTop = chatbox.scrollHeight;
-        }, 500);
+        // Fetch setup
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer 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', // Replace YOUR_API_KEY with your actual Hugging Face API key
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({inputs: {question: message, context: context}})
+        })
+        .then(response => response.json())
+        .then(data => {
+    if (data['answer']) {
+        displayBotMessage(data['answer']);  // Use 'answer' key instead of 'generated_text'
+    } else {
+        console.log('No answer found or wrong key', data);
+        displayBotMessage("Sorry, I couldn't process your question.");  // Fallback message
+    }
+})
+        .catch(error => console.error('Error:', error));
     }
 }
+
+function displayUserMessage(message) {
+    var chatbox = document.getElementById("chatbox");
+    var userMessage = document.createElement("div");
+    userMessage.className = 'message user-message';
+    var messageIconContent = userInitials ? `<div class='message-icon initials'>${userInitials}</div>` : `<img src='${personIconUrl}' alt='User Icon' class='message-icon'>`;
+    userMessage.innerHTML = `<div class='message-content'>${message.replace(/\n/g, '<br>')}</div>${messageIconContent}`;
+    chatbox.appendChild(userMessage);
+    document.getElementById("userInput").value = '';  // Clear input box
+    chatbox.scrollTop = chatbox.scrollHeight;
+}
+
+function displayBotMessage(answer) {
+    var chatbox = document.getElementById("chatbox");
+    var botMessage = document.createElement("div");
+    botMessage.className = 'message bot-message';
+    botMessage.innerHTML = `<div class='message-icon'><img src='${botIconUrl}' alt='Bot Icon'></div><div class='message-content'>${answer}</div>`;
+    chatbox.appendChild(botMessage);
+    chatbox.scrollTop = chatbox.scrollHeight;
+}
+
+function displayInitialBotMessage() {
+    var chatbox = document.getElementById("chatbox");
+    var botMessage = document.createElement("div");
+    botMessage.className = 'message bot-message';
+    botMessage.innerHTML = `<div class='message-icon'><img src='${botIconUrl}' alt='Bot Icon'></div><div class='message-content'>Hello, welcome to SatBot 😃, your 24/7 guide. How can I help you today?</div>`;
+    chatbox.appendChild(botMessage);
+}
+
+
 
 
 
@@ -489,6 +521,10 @@ document.getElementById('userInput').addEventListener('input', function() {
         window.onload = function() {
             focusChatInput();
         };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            displayInitialBotMessage();
+        });
     </script>
 </body>
 </html>
