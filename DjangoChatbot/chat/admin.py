@@ -1,14 +1,35 @@
+# admin.py
 from django.contrib import admin
-from .models import Course, User
+from django.utils.html import format_html
+from .models import Document, Course
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
     list_display = ['name', 'year', 'semester']
-    search_fields = ['name', 'year', 'semester']  # Optional: Add search capability
-    list_filter = ['year', 'semester']  # Optional: Add filters on the side
+    search_fields = ['name', 'year', 'semester']
+    list_filter = ['year', 'semester']
 
-"""
-@admin.register(Intent)
-class IntentAdmin(admin.ModelAdmin):
-    list_display = ['question', 'answer', 'course']
-"""
+@admin.register(Document)
+class DocumentAdmin(admin.ModelAdmin):
+    list_display = ['name', 'uploaded_at', 'course_name', 'document_link']
+    list_filter = ['course__name']  # Allow filtering by course name in the admin
+    readonly_fields = ['uploaded_at', 'document_link']
+
+    def document_link(self, obj):
+        if obj.docfile:
+            return format_html("<a href='{}'>Download</a>", obj.docfile.url)
+        return "No file"
+
+    def course_name(self, obj):
+        return obj.course.name if obj.course else "General"
+    document_link.short_description = "Document"
+    course_name.short_description = "Course"
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'docfile', 'course')
+        }),
+        ('Timestamp', {
+            'fields': ('uploaded_at',),
+            'classes': ('collapse',)
+        }),
+    )
