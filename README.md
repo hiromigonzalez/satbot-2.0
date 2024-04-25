@@ -8,7 +8,7 @@ To ensure the program runs smoothly, you need to perform a couple of setup steps
 
 ### 1. Set Up the Environment File
 
-First, you'll need to create a `.env` file in the root directory of the project. This file will store sensitive information such as API keys. Add the following line to the `.env` file, replacing `YOUR_API_KEY_HERE` with your actual OpenAI API key:
+First, you'll need to create a `.env` file in the root directory of the project (DjangoChatBot). This file will store sensitive information such as API keys. Add the following line to the `.env` file, replacing `YOUR_API_KEY_HERE` with your actual OpenAI API key:
 
 ```OPENAI_API_KEY="YOUR_API_KEY_HERE"```
 
