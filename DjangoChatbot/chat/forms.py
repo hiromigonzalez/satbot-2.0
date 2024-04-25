@@ -45,3 +45,9 @@ class CustomUserCreationForm(UserCreationForm):
         if commit:
             user.save()
             self.save_m2m()
+
+class DocumentForm(forms.Form):
+    docfile = forms.FileField(
+        label='Select a document',
+        help_text='max. 42 megabytes'
+    )
