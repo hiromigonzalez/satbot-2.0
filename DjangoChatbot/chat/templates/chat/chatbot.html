@@ -185,12 +185,9 @@
 
         * Message Content Inside Bubbles */
         .message-content {
-            display: flex;
-            align-items: center;
             padding: 10px;
             border-radius: 20px;
             box-shadow: 0px 0px 10px rgba(0,0,0,0.1); /* subtle shadow for depth */
-            background-color: var(--bubble-user-bg-color); /* Ensure background color is set for visibility */
         }
 
 
@@ -201,18 +198,17 @@
         }
 
         .bot-message .message-icon {
+
         }
 
         .user-message {
             background-color: var(--bubble-user-bg-color);
             margin-right: 10px;
-            justify-content: flex-end;
             align-self: flex-end; /* Align user messages to the right */
         }
 
         .user-message .message-icon {
-            margin-right: 10px; /* Adds spacing between icon and text */
-            order: -1; /* Ensures icon appears to the left */
+            
         }
 
         /* User and Bot Icons */
@@ -220,7 +216,6 @@
             width: 30px;  /* Desired width for the icons, ensuring it matches the container size */
             height: 30px;  /* Desired height for the icons, ensuring it matches the container size */
             border-radius: 60%;
-            margin-right: 10px;
             overflow: hidden;  /* Ensures the image doesn't exceed the bounds of the container */
             display: flex;
             justify-content: center;
@@ -256,6 +251,13 @@
         .user-message .message-icon {
             margin-left: 5px;
             order: 1; /* Moves icon to the right of the message */
+        }
+
+        .sender-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            margin: 0 10px; /* Adjust spacing around the icon as needed */
         }
 
         .clean-chat-icon {
@@ -379,61 +381,74 @@
         }
 
         function appendUserMessage(message) {
-            // Get the initial values from template tags rendered by Django
-            var userInitials = "{{ user_initials }}";
-            var personIconUrl = "{% static 'icons/person.png' %}";
+    // Get the initial values from template tags rendered by Django
+    var userInitials = "{{ user_initials }}";
+    var personIconUrl = "{% static 'icons/person.png' %}";
 
-            // Access the chatbox container
-            var chatbox = document.getElementById("chatbox");
+    // Access the chatbox container
+    var chatbox = document.getElementById("chatbox");
 
-            // Create a div element for displaying the user's message
-            var userMessage = document.createElement("div");
-            userMessage.className = 'message user-message';
+    // Create a div element for displaying the user's message
+    var userMessage = document.createElement("div");
+    userMessage.className = 'message user-message';
 
-            // Create content for the message icon, using initials if available, otherwise an image
-            var messageIconContent = userInitials ? 
-                `<div class='message-icon initials'>${userInitials}</div>` : 
-                `<img src='${personIconUrl}' alt='User Icon' class='message-icon'>`;
+    // Create content for the message icon, using initials if available, otherwise an image
+    var messageIcon = document.createElement("div");
+    messageIcon.className = 'message-icon';
+    messageIcon.innerHTML = userInitials ? 
+        `<div class='initials'>${userInitials}</div>` : 
+        `<img src='${personIconUrl}' alt='User Icon'>`;
 
-            // Create a container for the message text and prepend the icon
-            var messageContent = document.createElement("div");
-            messageContent.className = 'message-content';
-            messageContent.innerHTML = `${messageIconContent}<div class='message-text'>${message.replace(/\n/g, '<br>')}</div>`;
+    // Create a container for the message text
+    var messageContent = document.createElement("div");
+    messageContent.className = 'message-content';
+    messageContent.innerHTML = `${message.replace(/\n/g, '<br>')}`;
 
-            // Append the message content to the user message element
-            //userMessage.appendChild(messageIconContent);
-            userMessage.appendChild(messageContent);
+    // Append the icon and message content to the user message element
+    userMessage.appendChild(messageIcon);
+    userMessage.appendChild(messageContent);
 
-            // Add the completed user message to the chatbox
-            chatbox.appendChild(userMessage);
-        }
+    // Add the completed user message to the chatbox
+    chatbox.appendChild(userMessage);
+    chatbox.scrollTop = chatbox.scrollHeight;  // Scroll to bottom
+}
 
-        function appendBotMessage(message) {
-            var botIconUrl = "{% static 'icons/bot.png' %}";
+function appendBotMessage(message) {
+    var botIconUrl = "{% static 'icons/bot.png' %}";
 
-            // Create the icon container and image element
-            var iconDiv = document.createElement("div");
-            iconDiv.className = 'message-icon';
-            var iconImg = document.createElement("img");
-            iconImg.src = botIconUrl;
-            iconImg.alt = 'Bot Icon';
-            iconDiv.appendChild(iconImg);
+    // Access the chatbox container
+    var chatbox = document.getElementById("chatbox");
 
-            var chatbox = document.getElementById("chatbox");
-            var botMessage = document.createElement("div");
-            botMessage.className = 'message bot-message';
-            var messageContent = document.createElement("div");
-            messageContent.className = 'message-content';
-            messageContent.innerHTML =  message;  // Update this line if necessary to format the message
+    // Create a div element for the bot's message
+    var botMessage = document.createElement("div");
+    botMessage.className = 'message bot-message';
 
-            // Append the icon and message content to the bot message div
-            botMessage.appendChild(iconDiv);
-            botMessage.appendChild(messageContent);
+    // Create the icon container and image element
+    var iconDiv = document.createElement("div");
+    iconDiv.className = 'message-icon';
+    var iconImg = document.createElement("img");
+    iconImg.src = botIconUrl;
+    iconImg.alt = 'Bot Icon';
+    iconDiv.appendChild(iconImg);
 
-            // Append the bot message to the chatbox and scroll to bottom
-            chatbox.appendChild(botMessage);
-            scrollToBottom();  // Ensure the latest messages are visible
-        }
+    // Create a container for the message text
+    var messageContent = document.createElement("div");
+    messageContent.className = 'message-content';
+    messageContent.innerHTML = message;  // Update this line if necessary to format the message
+
+    // Append the icon and message content to the bot message div
+    botMessage.appendChild(iconDiv);
+    botMessage.appendChild(messageContent);
+
+    // Append the bot message to the chatbox and scroll to bottom
+    chatbox.appendChild(botMessage);
+    chatbox.scrollTop = chatbox.scrollHeight;  // Scroll to bottom
+}
+
+function scrollToBottom() {
+    var chatbox = document.getElementById("chatbox");
+    chatbox.scrollTop = chatbox.scrollHeight;
+}
 
         function getCookie(name) {
             var cookieValue = null;
