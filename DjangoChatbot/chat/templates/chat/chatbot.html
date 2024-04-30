@@ -381,36 +381,33 @@
         }
 
         function appendUserMessage(message) {
-    // Get the initial values from template tags rendered by Django
     var userInitials = "{{ user_initials }}";
     var personIconUrl = "{% static 'icons/person.png' %}";
-
-    // Access the chatbox container
     var chatbox = document.getElementById("chatbox");
 
-    // Create a div element for displaying the user's message
     var userMessage = document.createElement("div");
     userMessage.className = 'message user-message';
 
-    // Create content for the message icon, using initials if available, otherwise an image
     var messageIcon = document.createElement("div");
     messageIcon.className = 'message-icon';
-    messageIcon.innerHTML = userInitials ? 
-        `<div class='initials'>${userInitials}</div>` : 
-        `<img src='${personIconUrl}' alt='User Icon'>`;
 
-    // Create a container for the message text
+    // Use initials if available, otherwise use an image
+    if (userInitials) {
+        messageIcon.innerHTML = `<div class='initials'>${userInitials}</div>`;
+        messageIcon.className = 'message-icon initials'; // Make sure this is correct
+    } else {
+        messageIcon.innerHTML = `<img src='${personIconUrl}' alt='User Icon'>`;
+    }
+
     var messageContent = document.createElement("div");
     messageContent.className = 'message-content';
     messageContent.innerHTML = `${message.replace(/\n/g, '<br>')}`;
 
-    // Append the icon and message content to the user message element
     userMessage.appendChild(messageIcon);
     userMessage.appendChild(messageContent);
 
-    // Add the completed user message to the chatbox
     chatbox.appendChild(userMessage);
-    chatbox.scrollTop = chatbox.scrollHeight;  // Scroll to bottom
+    chatbox.scrollTop = chatbox.scrollHeight;
 }
 
 function appendBotMessage(message) {
