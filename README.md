@@ -25,3 +25,23 @@ This command will install all the Python packages listed in `requirements.txt`, 
 Once you have completed the setup, you can start the server by running the following command:
 
 ```python3 manage.py runserver```
+
+## Running the Application with Docker
+
+Use Docker to deploy the application consistently across any environment. Follow these steps and commands:
+
+### Build the Docker Image
+Build the Docker image containing all necessary components with the following command:
+
+```
+docker build -t satbot .
+```
+
+### Run the Application in a Docker Container
+Start the application in a Docker container to keep deployment portable and isolated:
+
+```
+docker run -d -p 8000:8000 satbot
+```
+
+This command runs the `satbot` container in detached mode, making it accessible at `http://localhost:8000`.
