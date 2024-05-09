@@ -29,7 +29,7 @@ def load_and_process_documents():
 def answer_question(query):
     db = load_and_process_documents()
     retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 2})
-    api_key = "sk-proj-TCExjdnvwn5m0JeZfwHrT3BlbkFJFIqLNIfddSGf4BDDexsB"
+    api_key = ""
     llm = OpenAI()
     qa = RetrievalQA.from_chain_type(
         llm=llm, chain_type="map_reduce", retriever=retriever, return_source_documents=True)
