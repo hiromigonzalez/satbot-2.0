@@ -1,5 +1,5 @@
+#utils.py
 import os
-from django.conf import settings
 from langchain.llms import OpenAI
 from langchain.document_loaders import PyPDFLoader
 from langchain.text_splitter import CharacterTextSplitter

@@ -1,4 +1,4 @@
-# chat/views.py
+# views.py
 import os
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
@@ -11,18 +11,24 @@ from langchain.llms import OpenAI
 from .langchain_client import answer_question
 from django.conf import settings
 from django.http import JsonResponse
+from .langchain_client import answer_question, generate_contextual_prompt
 
 
 def query_documents(request):
+    print("1")
     query = request.GET.get('query')
     if query:
+        course_id = request.user.course.id if request.user.course else None
+
+        # Generate the contextual prompt
+        prompt = generate_contextual_prompt(query, user=request.user, course_id=course_id)
+
         try:
-            answer = answer_question(query)
+            # Pass the generated prompt to the answer_question function
+            answer = answer_question(query, course_id, prompt=prompt)
             return JsonResponse({'answer': answer})
         except Exception as e:
-            # Log the exception for server-side debugging
             print(f"Error processing query: {str(e)}")
-            # Return a JSON error message
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'No query provided'}, status=400)
